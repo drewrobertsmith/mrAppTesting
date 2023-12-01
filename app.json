@@ -3,8 +3,11 @@
     "name": "mrAppTesting",
     "slug": "mrAppTesting",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    }
   }
 }
