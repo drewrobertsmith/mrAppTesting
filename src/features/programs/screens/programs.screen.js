@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import ProgramItem from '../components/programItem.component';
 import { ProgramsRequest } from '../../../services/programsAndClipsRequest.service';
 
-export default function ProgramsScreen() {
+export default function ProgramsScreen({navigation}) {
   const [isLoading, setIsLoading] = useState(false);
   const [programs, setPrograms] = useState([]);
 
@@ -34,11 +34,11 @@ export default function ProgramsScreen() {
       renderItem={({ item }) => (
         <Pressable
           style={styles.showContainer}
-          //   onPress={() =>
-          //     navigation.navigate("Show Detail", {
-          //       show: item,
-          //     })
-          //   }
+            onPress={() =>
+              navigation.navigate("Episodes Screen", {
+                show: item,
+              })
+            }
         >
           <ProgramItem artwork={item.ArtworkUrl} name={item.Name} />
         </Pressable>
