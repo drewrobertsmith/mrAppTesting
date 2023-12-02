@@ -35,27 +35,27 @@ function formatDate(publishedUtc) {
 export default function EpisodeItem({ show }) {
   function handlePlayButtonPress() {
     //adds a track object to the queue in position 0, skips to position 0, then plays audio in position 0
-    //   TrackPlayer.add(
-    //     {
-    //       id: show.Id,
-    //       title: show.Title,
-    //       url: show.AudioUrl,
-    //       artist: 'Moody Radio',
-    //       duration: show.DurationSeconds,
-    //     },
-    //     0,
-    //   );
-    //   TrackPlayer.skip(0);
-    //   TrackPlayer.play();
+    TrackPlayer.add(
+      {
+        id: show.Id,
+        title: show.Title,
+        url: show.AudioUrl,
+        artist: "Moody Radio",
+        duration: show.DurationSeconds,
+      },
+      0
+    );
+    TrackPlayer.skip(0);
+    TrackPlayer.play();
   }
   function handleQueueButtonPress() {
-    // TrackPlayer.add({
-    //   id: show.Id,
-    //   title: show.Title,
-    //   url: show.AudioUrl,
-    //   artist: 'Moody Radio',
-    //   duration: show.DurationSeconds,
-    // });
+    TrackPlayer.add({
+      id: show.Id,
+      title: show.Title,
+      url: show.AudioUrl,
+      artist: "Moody Radio",
+      duration: show.DurationSeconds,
+    });
   }
 
   return (
@@ -79,12 +79,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderTopWidth: 1,
     borderColor: "grey",
-    
   },
   singleEpisodeContainer: {
     flex: 0.9,
   },
   episodeTitleContainer: {
     flex: 1,
-  }
+  },
 });
