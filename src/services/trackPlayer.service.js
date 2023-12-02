@@ -59,5 +59,9 @@ export async function setupPlayer() {
       console.log('Event.RemotePrevious');
       TrackPlayer.skipToPrevious();
     });
+    // TrackPlayer.addEventListener(Event.RemoteSeek, () => {
+    //   console.log('Event.RemoteSeek');
+    //   TrackPlayer.seekBy();
+    // })
   }
   

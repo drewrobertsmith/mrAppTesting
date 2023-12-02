@@ -26,8 +26,8 @@ export default function AppNavigator() {
         tabBarInactiveTintColor: "grey",
       })}
     >
-      <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen name="Programs" component={ProgramNavigator} />
+      <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen
         name="Expanded Player"
         component={PlayerNavigator}

@@ -1,36 +1,9 @@
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { Button, StyleSheet, Text, View } from "react-native";
 import TrackPlayer, { useIsPlaying } from "react-native-track-player";
+import { formatDate, formatDuration } from "../../../services/formatter.service";
 
 import React from "react";
-
-//formats the duration
-function formatDuration(durationSeconds) {
-  const hours = Math.floor(durationSeconds / 3600);
-  const minutes = Math.floor((durationSeconds % 3600) / 60);
-
-  let formattedDuration = "";
-  if (hours > 0) {
-    formattedDuration += `${hours}h `;
-  }
-  if (minutes > 0) {
-    formattedDuration += `${minutes}m`;
-  }
-  return formattedDuration;
-}
-
-//formats the date
-function formatDate(publishedUtc) {
-  const date = new Date(publishedUtc);
-  const options = { month: "long", day: "numeric" };
-  const currentYear = new Date().getFullYear();
-
-  if (date.getFullYear() === currentYear) {
-    return date.toLocaleDateString("en-US", options);
-  } else {
-    return date.toLocaleDateString("en-US", { ...options, year: "numeric" });
-  }
-}
 
 export default function EpisodeItem({ show }) {
   function handlePlayButtonPress() {
