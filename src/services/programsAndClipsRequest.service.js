@@ -6,6 +6,7 @@ const ORG_ID = "a8cdbf10-d816-4c77-9e79-aa1c012547e1";
 
 //cache control
 const CACHE_KEY = "ProgramsCache";
+const PLAYLISTS_CACHE_PREFIX = "PlaylistsCache_";
 const CLIPS_CACHE_PREFIX = "ClipsCache_"; // Prefix for cache key
 const CACHE_EXPIRATION_MINUTES = 60; // Cache Expiration Time
 
@@ -53,9 +54,61 @@ export async function ProgramsRequest({ setIsLoading, setPrograms }) {
     setIsLoading(false);
   }
 }
+/*================================Playlist REQUEST=========================================*/
+export async function PlaylistsRequest({ setIsLoading, setPlaylists, show }) {
+  setIsLoading(true);
+  const cacheKey = `${PLAYLISTS_CACHE_PREFIX}${show.Id}`; // Unique cache key for each playlist
 
-//CLIPS  REQUEST
-export async function ClipsRequest({ setIsLoading, setEpisodes, show }) {
+  try {
+    //check cache
+    const cachedData = await AsyncStorage.getItem(cacheKey);
+    if (cachedData) {
+      const { data, timestamp } = JSON.parse(cachedData);
+      const isCacheValid =
+        (new Date().getTime() - timestamp) / 6000 < CACHE_EXPIRATION_MINUTES;
+
+      if (isCacheValid) {
+        setPlaylists(data);
+        setIsLoading(false);
+        return;
+      } else {
+        console.log(
+          "Cache expired for playlists of:",
+          show.Id,
+          "fetching new data"
+        );
+      }
+    } else {
+      console.log(
+        "No cached data found for playlists",
+        show.Id,
+        "fetching from API"
+      );
+    }
+
+    //API request
+    const response = await fetch(
+      `${BASE_URL}/orgs/${ORG_ID}/programs/${show.Id}/playlists`
+    );
+    const result = await response.json();
+    setPlaylists(result.Playlists);
+
+    //Cache Data
+    const cacheValue = {
+      data: result.Playlists,
+      timestamp: new Date().getTime(),
+    };
+    await AsyncStorage.setItem(cacheKey, JSON.stringify(cacheValue));
+    console.log("New Data cached for playlists", show.id);
+  } catch (error) {
+    console.log("error fetching playlists data for show", show.Id, error);
+  } finally {
+    setIsLoading(false);
+  }
+}
+
+/*================================CLIPS BY PLAYLIST REQUEST=========================================*/
+export async function ClipsByPlaylistRequest({ setIsLoading, setEpisodes, show }) {
   setIsLoading(true);
   const cacheKey = `${CLIPS_CACHE_PREFIX}${show.Id}`; // Unique cache key for each show
 
@@ -86,7 +139,7 @@ export async function ClipsRequest({ setIsLoading, setEpisodes, show }) {
 
     // API Request
     const response = await fetch(
-      `${BASE_URL}/orgs/${ORG_ID}/programs/${show.Id}/clips`
+      `${BASE_URL}/orgs/${ORG_ID}/playlists/${show.DefaultPlaylistId}/clips/v2`
     );
     const result = await response.json();
     setEpisodes(result.Clips);
