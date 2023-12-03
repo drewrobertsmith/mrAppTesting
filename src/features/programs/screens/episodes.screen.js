@@ -35,14 +35,30 @@ export default function EpisodesScreen({ route }) {
   const [episodes, setEpisodes] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
 
   useEffect(() => {
     PlaylistsRequest({ setPlaylists, setIsLoading, show });
-  }, [playlists]);
+  }, []);
 
   useEffect(() => {
-    ClipsByPlaylistRequest({ setEpisodes, setIsLoading, show });
-  }, [show]);
+    if (playlists.length > 0) {
+      // Assuming the first playlist is the default one
+      const defaultPlaylistId = playlists[0].Id;
+      setSelectedPlaylistId(defaultPlaylistId);
+      ClipsByPlaylistRequest({
+        setEpisodes,
+        setIsLoading,
+        playlistId: defaultPlaylistId,
+      });
+    }
+  }, [playlists]);
+
+  // Function to handle playlist selection
+  const handlePlaylistSelect = (playlistId) => {
+    setSelectedPlaylistId(playlistId);
+    ClipsByPlaylistRequest({ setEpisodes, setIsLoading, playlistId });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,14 +67,23 @@ export default function EpisodesScreen({ route }) {
         <Text>{show.Name}</Text>
         <Text>{show.Description}</Text>
       </View>
-      <View>
+      <View style={styles.playlistsContainer}>
         <FlatList
           data={playlists}
-          horizontal={true}
+          horizontal={false}
+          numColumns={4}
           keyExtractor={(item) => item.Id}
           renderItem={({ item }) => (
-            <Chip mode="outlined">
-            {/* <Chip mode="outlined" onPress={() => ClipsByPlaylistRequest({setEpisodes, setIsLoading, item})}> */}
+            <Chip
+              style={[
+                styles.playlistChips,
+                item.Id === selectedPlaylistId
+                  ? styles.selectedPlaylistChip
+                  : {},
+              ]}
+              mode="outlined"
+              onPress={() => handlePlaylistSelect(item.Id)}
+            >
               {item.Title}
             </Chip>
           )}
@@ -88,5 +113,15 @@ const styles = StyleSheet.create({
   showImage: {
     width: 200,
     height: 200,
+  },
+  playlistsContainer: {
+    flexWrap: "wrap",
+    padding: 8,
+  },
+  playlistChips: {
+    margin: 2,
+  },
+  selectedPlaylistChip: {
+    backgroundColor: '#E0E0E0', // or any other style changes for the selected chip
   },
 });

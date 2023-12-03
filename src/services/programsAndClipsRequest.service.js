@@ -108,9 +108,10 @@ export async function PlaylistsRequest({ setIsLoading, setPlaylists, show }) {
 }
 
 /*================================CLIPS BY PLAYLIST REQUEST=========================================*/
-export async function ClipsByPlaylistRequest({ setIsLoading, setEpisodes, show }) {
+export async function ClipsByPlaylistRequest({ setIsLoading, setEpisodes, playlistId }) {
+  
   setIsLoading(true);
-  const cacheKey = `${CLIPS_CACHE_PREFIX}${show.Id}`; // Unique cache key for each show
+  const cacheKey = `${CLIPS_CACHE_PREFIX}${playlistId}`; // Unique cache key for each show
 
   try {
     // Check cache
@@ -127,19 +128,19 @@ export async function ClipsByPlaylistRequest({ setIsLoading, setEpisodes, show }
         setIsLoading(false);
         return;
       } else {
-        console.log("Cache expired for show", show.Id, "fetching new data");
+        console.log("Cache expired for show", playlistId, "fetching new data");
       }
     } else {
       console.log(
         "No cached data found for show",
-        show.Id,
+        playlistId,
         "fetching from API"
       );
     }
 
     // API Request
     const response = await fetch(
-      `${BASE_URL}/orgs/${ORG_ID}/playlists/${show.DefaultPlaylistId}/clips/v2`
+      `${BASE_URL}/orgs/${ORG_ID}/playlists/${playlistId}/clips/v2`
     );
     const result = await response.json();
     setEpisodes(result.Clips);
@@ -147,9 +148,9 @@ export async function ClipsByPlaylistRequest({ setIsLoading, setEpisodes, show }
     // Cache data
     const cacheValue = { data: result.Clips, timestamp: new Date().getTime() };
     await AsyncStorage.setItem(cacheKey, JSON.stringify(cacheValue));
-    console.log("New data cached for show", show.Id);
+    console.log("New data cached for show", playlistId);
   } catch (error) {
-    console.log("Error fetching data for show", show.Id, error);
+    console.log("Error fetching data for show", playlistId, error);
   } finally {
     setIsLoading(false);
   }
