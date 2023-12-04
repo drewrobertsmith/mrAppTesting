@@ -10,7 +10,11 @@ export default function ProgramNavigator() {
       <Stack.Screen
         name="Programs Screen"
         component={ProgramsScreen}
-        options={{ headerShown: false }}
+        options={{ 
+          headerShown: true,
+          title: "Programs"
+          
+        }}
       />
       <Stack.Screen
         name="Episodes Screen"

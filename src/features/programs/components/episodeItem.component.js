@@ -7,7 +7,7 @@ import React from "react";
 
 export default function EpisodeItem({ show }) {
   function handlePlayButtonPress() {
-    //adds a track object to the queue in position 0, skips to position 0, then plays audio in position 0
+    //adds a track object to the queue in position 0, skips to position 0, then plays audio in position 0 to enable instant playback
     TrackPlayer.add(
       {
         id: show.Id,

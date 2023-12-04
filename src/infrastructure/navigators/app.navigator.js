@@ -5,7 +5,8 @@ import ProgramNavigator from "./program.navigator";
 import StationsScreen from "../../features/stations/screens/stations.screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator(
+);
 
 export default function AppNavigator() {
   return (
@@ -24,6 +25,7 @@ export default function AppNavigator() {
         },
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "grey",
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Programs" component={ProgramNavigator} />
@@ -33,7 +35,6 @@ export default function AppNavigator() {
         component={PlayerNavigator}
         options={{ 
             tabBarButton: () => null,
-            headerShown: false,
         }}
         
       />
