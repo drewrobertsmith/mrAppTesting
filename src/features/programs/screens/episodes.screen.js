@@ -17,19 +17,6 @@ import React, { useEffect, useState } from "react";
 import { Chip } from "react-native-paper";
 import EpisodeItem from "../components/episodeItem.component";
 
-// DATA = {
-//   Playlists: [
-//     {
-//       Id: "84c89ea1-c785-4736-bf57-abac0104cde0",
-//       Title: "Dawn and in the Steve Mornings",
-//     },
-//     {
-//       Id: "9bf5de81-979a-48d7-bf6d-b01b010d3eca",
-//       Title: "Moody Tunes",
-//     },
-//   ],
-//};
-
 export default function EpisodesScreen({ route }) {
   const { show } = route.params;
   const [episodes, setEpisodes] = useState([]);
@@ -64,7 +51,6 @@ export default function EpisodesScreen({ route }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.showInfoContainer}>
         <Image style={styles.showImage} source={{ uri: show.ArtworkUrl }} />
-        <Text>{show.Name}</Text>
         <Text>{show.Description}</Text>
       </View>
       <View style={styles.playlistsContainer}>
