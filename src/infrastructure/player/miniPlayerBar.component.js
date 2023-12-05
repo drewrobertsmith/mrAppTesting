@@ -26,7 +26,7 @@ export default function MiniPlayerBar(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'lightblue',
+    backgroundColor: '#003b5c',
     padding: 4,
   },
 });

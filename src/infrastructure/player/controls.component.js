@@ -33,14 +33,16 @@ export default function Controls() {
         onPress={() => TrackPlayer.seekBy(-15)}
         onLongPress={() => TrackPlayer.skipToPrevious()}
         style={{ transform: [{ rotateY: "180deg" }] }}
+        color={"white"}
       />
-      <Icon name={playState} size={48} onPress={handlePlayPress} />
+      <Icon name={playState} size={48} onPress={handlePlayPress} color={"white"}/>
 
       <Icon
         name="reload1"
         size={32}
         onPress={() => TrackPlayer.seekBy(15)}
         onLongPress={() => TrackPlayer.skipToNext()}
+        color={"white"}
       />
     </View>
   );
