@@ -5,12 +5,19 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  AuthenticationContext,
+  AuthenticationContextProvider,
+} from "./src/services/authentication/authentication.context";
+import React, { useContext, useEffect, useState } from "react";
 import { addTracks, setupPlayer } from "./src/services/trackPlayer.service";
 
 import AppNavigator from "./src/infrastructure/navigators/app.navigator";
+import AuthenticationNavigator from "./src/infrastructure/navigators/authentication.navigator";
+import Navigation from "./src/infrastructure/navigators/index.navigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { PaperProvider } from "react-native-paper";
+import RegisterScreen from "./src/features/account/screens/register.screen";
 import { StatusBar } from "expo-status-bar";
 import TrackPlayer from "react-native-track-player";
 
@@ -39,12 +46,12 @@ export default function App() {
     );
   } else {
     return (
-      <NavigationContainer>
         <PaperProvider>
           <StatusBar style="auto" />
-          <AppNavigator />
+          <AuthenticationContextProvider>
+            <Navigation />
+          </AuthenticationContextProvider>
         </PaperProvider>
-      </NavigationContainer>
     );
   }
 }
