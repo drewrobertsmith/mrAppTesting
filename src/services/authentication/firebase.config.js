@@ -1,6 +1,9 @@
 import {
+  Persistence,
   createUserWithEmailAndPassword,
   getAuth,
+  inMemoryPersistence,
+  initializeAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
@@ -19,6 +22,8 @@ const firebaseConfig = {
   messagingSenderId: "185501910646",
   appId: "1:185501910646:web:aa662956357aceb4328157",
 };
+
+
 
 //Initialize Firebase
 const app = initializeApp(firebaseConfig);
