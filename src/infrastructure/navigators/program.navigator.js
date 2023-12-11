@@ -11,9 +11,9 @@ export default function ProgramNavigator() {
         name="Programs Screen"
         component={ProgramsScreen}
         options={{ 
-          headerShown: true,
-          title: "Programs"
-          
+          // headerShown: true,
+          // title: "Programs"
+          headerShown: false,
         }}
       />
       <Stack.Screen

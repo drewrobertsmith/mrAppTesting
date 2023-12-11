@@ -1,14 +1,18 @@
+import { Button } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MiniPlayerBar from "../player/miniPlayerBar.component";
 import PlayerNavigator from "./player.navigator";
 import ProgramNavigator from "./program.navigator";
 import StationsScreen from "../../features/stations/screens/stations.screen";
+import { SupabaseAuthContext } from "../../services/authentication/supabaseAuth.context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useContext } from "react";
 
-const Tab = createBottomTabNavigator(
-);
+const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
+  const { signOutUser } = useContext(SupabaseAuthContext);
+
   return (
     <Tab.Navigator
       tabBar={(props) => <MiniPlayerBar {...props} />}
@@ -25,18 +29,28 @@ export default function AppNavigator() {
         },
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "grey",
-        headerShown: false,
       })}
     >
-      <Tab.Screen name="Programs" component={ProgramNavigator} />
+      <Tab.Screen
+        name="Programs"
+        component={ProgramNavigator}
+        options={{
+          headerRight: () => (
+            <Button
+              onPress={() => signOutUser()}
+              title="Sign Out"
+              color="red"
+            />
+          ),
+        }}
+      />
       <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen
         name="Expanded Player"
         component={PlayerNavigator}
-        options={{ 
-            tabBarButton: () => null,
+        options={{
+          tabBarButton: () => null,
         }}
-        
       />
     </Tab.Navigator>
   );

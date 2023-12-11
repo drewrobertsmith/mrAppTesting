@@ -2,27 +2,28 @@ import {
   ActivityIndicator,
   SafeAreaView,
   StyleSheet,
-  Text,
-  View,
 } from "react-native";
-import {
-  AuthenticationContext,
-  AuthenticationContextProvider,
-} from "./src/services/authentication/authentication.context";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addTracks, setupPlayer } from "./src/services/trackPlayer.service";
 
-import AppNavigator from "./src/infrastructure/navigators/app.navigator";
-import AuthenticationNavigator from "./src/infrastructure/navigators/authentication.navigator";
 import Navigation from "./src/infrastructure/navigators/index.navigator";
-import { NavigationContainer } from "@react-navigation/native";
 import { PaperProvider } from "react-native-paper";
-import RegisterScreen from "./src/features/account/screens/register.screen";
 import { StatusBar } from "expo-status-bar";
+import { SupabaseAuthContextProvidor } from "./src/services/authentication/supabaseAuth.context";
 import TrackPlayer from "react-native-track-player";
 
 export default function App() {
+  // const [session, setSession] = useState(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+
+  // useEffect(() => {
+  //   supabase.auth.getSession().then(({ data: { session } }) => {
+  //     setSession(session);
+  //   });
+  //   supabase.auth.onAuthStateChange((_event, session) => {
+  //     setSession(session);
+  //   });
+  // }, []);
 
   //this intantiates the player using the setupPlayer() function from the trackservice
   useEffect(() => {
@@ -46,12 +47,14 @@ export default function App() {
     );
   } else {
     return (
-        <PaperProvider>
-          <StatusBar style="auto" />
-          <AuthenticationContextProvider>
-            <Navigation />
-          </AuthenticationContextProvider>
-        </PaperProvider>
+      <PaperProvider>
+        <StatusBar style="auto" />
+        {/* <LoginScreen />
+        {session && session.user && <Text>{session.user.id}</Text>} */}
+        <SupabaseAuthContextProvidor>
+          <Navigation />
+        </SupabaseAuthContextProvidor>
+      </PaperProvider>
     );
   }
 }

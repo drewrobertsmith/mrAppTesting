@@ -1,38 +1,84 @@
-import { Button, SafeAreaView, Text } from "react-native";
-import { useContext, useState } from "react";
+import { Alert, StyleSheet, View } from 'react-native'
+import { Button, Input } from 'react-native-elements'
+import React, { useContext, useState } from 'react'
 
-import { AuthenticationContext } from "../../../services/authentication/authentication.context";
-import { SafeArea } from "../../../components/utility/safeArea.component";
-import { TextInput } from "react-native-paper";
+import { SupabaseAuthContext } from '../../../services/authentication/supabaseAuth.context'
 
 export default function LoginScreen() {
-  const { onLogin, error, isLoading } = useContext(AuthenticationContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {signInWithEmail, signUpWithEmail, isLoading} = useContext(SupabaseAuthContext);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // async function signInWithEmail() {
+  //   setLoading(true)
+  //   const { error } = await supabase.auth.signInWithPassword({
+  //     email: email,
+  //     password: password,
+  //   })
+
+  //   if (error) Alert.alert(error.message)
+  //   setLoading(false)
+  // }
+
+  // async function signUpWithEmail() {
+  //   setLoading(true)
+  //   const {
+  //     data: { session },
+  //     error,
+  //   } = await supabase.auth.signUp({
+  //     email: email,
+  //     password: password,
+  //   })
+
+  //   if (error) Alert.alert(error.message)
+  //   if (!session) Alert.alert('Please check your inbox for email verification!')
+  //   setLoading(false)
+  // }
 
   return (
-    <SafeArea>
-      <Text>Login</Text>
-      <TextInput
-        label="Your Email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        label="Your password"
-        value={password}
-        onChangeText={setPassword}
-        textContentType="password"
-        secureTextEntry
-      />
-      {error && <Text>{error}</Text>}
-      {!isLoading ? (
-        <Button title="Login" onPress={() => onLogin(email, password)} />
-      ) : (
-        <ActivityIndicator size="small"/>
-      )}
-    </SafeArea>
-  );
+    <View style={styles.container}>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Input
+          label="Email"
+          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+          placeholder="email@address.com"
+          autoCapitalize={'none'}
+        />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Input
+          label="Password"
+          leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={true}
+          placeholder="Password"
+          autoCapitalize={'none'}
+        />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Button title="Sign in" disabled={isLoading} onPress={() => signInWithEmail(email, password)} />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Button title="Sign up" disabled={isLoading} onPress={() => signUpWithEmail(email, password)} />
+      </View>
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 40,
+    padding: 12,
+  },
+  verticallySpaced: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: 'stretch',
+  },
+  mt20: {
+    marginTop: 20,
+  },
+})
