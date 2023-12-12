@@ -3,7 +3,6 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -13,16 +12,11 @@ import React, { useState } from "react";
 import EpisodeItem from "../components/episodeItem.component";
 import ProgramsPlaylists from "../components/programPlaylists.component";
 
-function ProgramHeader({ show, setEpisodes, setIsLoading }) {
+function ProgramHeader({ show }) {
   return (
     <View style={styles.showInfoContainer}>
       <Image style={styles.showImage} source={{ uri: show.ArtworkUrl }} />
       <Text>{show.Description}</Text>
-      <ProgramsPlaylists
-        setEpisodes={setEpisodes}
-        setIsLoading={setIsLoading}
-        show={show}
-      />
     </View>
   );
 }
@@ -30,23 +24,27 @@ function ProgramHeader({ show, setEpisodes, setIsLoading }) {
 export default function EpisodesScreen({ route }) {
   const { show } = route.params;
   const [episodes, setEpisodes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [arePlaylistsLoading, setArePlaylistsLoading] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProgramHeader
-        show={show}
-        setEpisodes={setEpisodes}
-        setIsLoading={setIsLoading}
-      />
-
-      {isLoading ? (
+      {arePlaylistsLoading ? (
         <ActivityIndicator size="small" />
       ) : (
         <FlatList
           data={episodes}
           keyExtractor={(item) => item.Id}
           renderItem={({ item }) => <EpisodeItem show={item} />}
+          ListHeaderComponent={
+            <View>
+              <ProgramHeader show={show} />
+              <ProgramsPlaylists 
+                show={show}
+                setEpisodes={setEpisodes}
+                setArePlaylistsLoading={setArePlaylistsLoading}
+              />
+            </View>
+          }
         />
       )}
     </SafeAreaView>

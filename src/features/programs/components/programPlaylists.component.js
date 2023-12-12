@@ -7,32 +7,35 @@ import { useEffect, useState } from "react";
 
 import { Chip } from "react-native-paper";
 
-export default function ProgramsPlaylists({ setIsLoading, show, setEpisodes }) {
+export default function ProgramsPlaylists({ show, setEpisodes, setArePlaylistsLoading }) {
   const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+  //my setIsLoading prop drilling is causing render issues. May need to refactor to move playlists flatlist to episodes screen rather than episodes flatlist
+  const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
     PlaylistsRequest({ setPlaylists, setIsLoading, show });
   }, []);
 
-  useEffect(() => {
-    if (playlists.length > 0) {
-      // Assuming the first playlist is the default one
-      const defaultPlaylistId = playlists[0].Id;
-      setSelectedPlaylistId(defaultPlaylistId);
-      ClipsByPlaylistRequest({
-        setEpisodes,
-        setIsLoading,
-        playlistId: defaultPlaylistId,
-      });
-    }
-  }, [playlists]);
+    useEffect(() => {
+      if (playlists.length > 0) {
+        // Assuming the first playlist is the default one
+        const defaultPlaylistId = playlists[0].Id;
+        setSelectedPlaylistId(defaultPlaylistId);
+        ClipsByPlaylistRequest({
+          setEpisodes,
+          setIsLoading,
+          playlistId: defaultPlaylistId,
+        });
+      }
+    }, [playlists]);
 
   // Function to handle playlist selection
-  const handlePlaylistSelect = (playlistId) => {
-    setSelectedPlaylistId(playlistId);
-    ClipsByPlaylistRequest({ setEpisodes, setIsLoading, playlistId });
-  };
+    const handlePlaylistSelect = (playlistId) => {
+      setSelectedPlaylistId(playlistId);
+      ClipsByPlaylistRequest({ setEpisodes, setIsLoading, playlistId });
+    };
 
   return (
     <View style={styles.playlistsContainer}>

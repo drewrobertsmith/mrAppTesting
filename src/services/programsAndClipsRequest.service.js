@@ -109,3 +109,18 @@ export async function ClipsByPlaylistRequest({
     setIsLoading(false);
   }
 }
+
+/*================================CLIPS BY PROGRAM ID=========================================*/
+export async function ClipsByProgramID({ setIsLoading, setEpisodes, show }) {
+  setIsLoading(true);
+  try {
+    const result = await fetchData(
+      `/orgs/${ORG_ID}/programs/${show.Id}/clips`
+    );
+    setEpisodes(result.Clips);
+  } catch (error) {
+    console.log("error fetching data: ", error);
+  } finally {
+    setIsLoading(false);
+  }
+}
