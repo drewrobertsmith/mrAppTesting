@@ -34,11 +34,15 @@ export default function EpisodesScreen({ route }) {
         <FlatList
           data={episodes}
           keyExtractor={(item) => item.Id}
-          renderItem={({ item }) => <EpisodeItem show={item} />}
+          renderItem={({ item }) => (
+            <EpisodeItem
+              episode={item}
+            />
+          )}
           ListHeaderComponent={
             <View>
               <ProgramHeader show={show} />
-              <ProgramsPlaylists 
+              <ProgramsPlaylists
                 show={show}
                 setEpisodes={setEpisodes}
                 setArePlaylistsLoading={setArePlaylistsLoading}

@@ -1,42 +1,58 @@
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
-import { Button, StyleSheet, Text, View } from "react-native";
 import TrackPlayer, { useIsPlaying } from "react-native-track-player";
-import { formatDate, formatDuration } from "../../../services/formatter.service";
+import {
+  formatDate,
+  formatDuration,
+} from "../../../services/formatter.service";
 
 import React from "react";
 
-export default function EpisodeItem({ show }) {
-  function handlePlayButtonPress() {
-    //adds a track object to the queue in position 0, skips to position 0, then plays audio in position 0 to enable instant playback
-    TrackPlayer.add(
-      {
-        id: show.Id,
-        title: show.Title,
-        url: show.AudioUrl,
-        artist: "Moody Radio",
-        duration: show.DurationSeconds,
-      },
-      0
-    );
-    TrackPlayer.skip(0);
-    TrackPlayer.play();
-  }
-  function handleQueueButtonPress() {
-    TrackPlayer.add({
-      id: show.Id,
-      title: show.Title,
-      url: show.AudioUrl,
-      artist: "Moody Radio",
-      duration: show.DurationSeconds,
-    });
+export default function EpisodeItem({ episode }) {
+  async function handlePlayButtonPress() {
+    const queue = await TrackPlayer.getQueue();
+    const trackIndex = queue.findIndex((track) => track.id === episode.Id);
+    if (trackIndex === -1) {
+      await TrackPlayer.add(
+        //adds a track object to the queue in position 0
+        {
+          id: episode.Id,
+          title: episode.Title,
+          url: episode.AudioUrl,
+          artist: "Moody Radio",
+          duration: episode.DurationSeconds,
+        },
+        0
+      );
+      await TrackPlayer.skip(0); //skips to position 0
+    } else {
+      await TrackPlayer.skip(trackIndex);
+      await TrackPlayer.move(trackIndex, 0); //moves track to position zero
+    }
+    await TrackPlayer.play();
   }
 
+  async function handleQueueButtonPress() {
+    const queue = await TrackPlayer.getQueue();
+    const trackIndex = queue.findIndex((track) => track.id === episode.Id);
+    if (trackIndex === -1) {
+      await TrackPlayer.add({
+        id: episode.Id,
+        title: episode.Title,
+        url: episode.AudioUrl,
+        artist: "Moody Radio",
+        duration: episode.DurationSeconds,
+      });
+    } else {
+      Alert.alert("Already in Queue");
+    }
+  }
   return (
     <View style={styles.episodesContainer}>
       <View style={styles.singleEpisodeContainer}>
-        <Text>{formatDate(show.PublishedUtc)}</Text>
-        <Text style={styles.episodeTitleContainer}>{show.Title}</Text>
-        <Text>{formatDuration(show.DurationSeconds)}</Text>
+        <Text>{formatDate(episode.PublishedUtc)}</Text>
+        <Text style={styles.episodeTitleContainer}>{episode.Title}</Text>
+        <Text>{formatDuration(episode.DurationSeconds)}</Text>
       </View>
       <AntDesign name="playcircleo" size={32} onPress={handlePlayButtonPress} />
       <Entypo name="add-to-list" size={32} onPress={handleQueueButtonPress} />
