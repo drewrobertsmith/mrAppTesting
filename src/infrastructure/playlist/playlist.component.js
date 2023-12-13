@@ -37,9 +37,10 @@ export default function Playlist() {
         data={queue}
         renderItem={({item, index}) => (
           <PlaylistItem
-            title={item.title}
+            track={item}
             index={index}
             isCurrent={currentTrack === index}
+
           />
         )}
         keyExtractor={item => item.id}

@@ -9,9 +9,12 @@ import {
 import React from "react";
 
 export default function EpisodeItem({ episode }) {
-  async function handlePlayButtonPress() {
+
+  async function updateQueue(trackAction) {
     const queue = await TrackPlayer.getQueue();
     const trackIndex = queue.findIndex((track) => track.id === episode.Id);
+    
+    //if track is not in queue
     if (trackIndex === -1) {
       await TrackPlayer.add(
         //adds a track object to the queue in position 0
@@ -20,33 +23,34 @@ export default function EpisodeItem({ episode }) {
           title: episode.Title,
           url: episode.AudioUrl,
           artist: "Moody Radio",
+          artwork: episode.ImageUrl,
           duration: episode.DurationSeconds,
-        },
-        0
+          date: episode.PublishedUtc,
+        }
       );
-      await TrackPlayer.skip(0); //skips to position 0
-    } else {
-      await TrackPlayer.skip(trackIndex);
-      await TrackPlayer.move(trackIndex, 0); //moves track to position zero
+      if (trackAction === "play") {
+        await TrackPlayer.skip(0); //skips to position 0
+        await TrackPlayer.play();
+      }
+    } else { //if track is in queue
+      if (trackAction === "play") {
+        await TrackPlayer.skip(trackIndex);
+        await TrackPlayer.move(trackIndex, 0);
+        await TrackPlayer.play();
+      } else {
+        Alert.alert("Already in Queue");
+      }
     }
-    await TrackPlayer.play();
+  }
+
+  async function handlePlayButtonPress() {
+    await updateQueue("play");
   }
 
   async function handleQueueButtonPress() {
-    const queue = await TrackPlayer.getQueue();
-    const trackIndex = queue.findIndex((track) => track.id === episode.Id);
-    if (trackIndex === -1) {
-      await TrackPlayer.add({
-        id: episode.Id,
-        title: episode.Title,
-        url: episode.AudioUrl,
-        artist: "Moody Radio",
-        duration: episode.DurationSeconds,
-      });
-    } else {
-      Alert.alert("Already in Queue");
-    }
+    await updateQueue("queue");
   }
+
   return (
     <View style={styles.episodesContainer}>
       <View style={styles.singleEpisodeContainer}>
