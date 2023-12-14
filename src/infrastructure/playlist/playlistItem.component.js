@@ -1,12 +1,16 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import TrackPlayer, { useProgress } from "react-native-track-player";
 import { formatDate, formatDuration } from "../../services/formatter.service";
 
 import React from "react";
-import TrackPlayer from "react-native-track-player";
 
 export default function PlaylistItem({ track, index, isCurrent }) {
+  const { position, duration } = useProgress();
+
+  const progressWidth = duration > 0 ? (position / duration) * 100 : 0;
+
   async function handleItemPress() {
-    await TrackPlayer.skip(index); //skips to selected track in queue, tried to do position but it's going to the initial position of everything couting up, it is not individualized
+    await TrackPlayer.skip(index); //skips to selected track in queue, 
     await TrackPlayer.move(index, 0); //moves selected track to top position
     await TrackPlayer.play(); //begins playing slected track
   }
@@ -19,15 +23,20 @@ export default function PlaylistItem({ track, index, isCurrent }) {
       <TouchableOpacity onPress={handleItemPress} onLongPress={handleLongPress}>
         <View
           style={{
-            ...styles.trackContainer,
-            ...{ backgroundColor: isCurrent ? "lightblue" : "transparent" },
+            ...styles.progressBar,
+            ...{
+              backgroundColor: isCurrent ? "lightblue" : "transparent",
+              width: isCurrent ? `${progressWidth}%` : "0%",
+            },
           }}
         >
-          <Image style={styles.image} src={track.artwork} />
-          <View>
-            <Text>{formatDate(track.date)}</Text>
-            <Text style={styles.playlistItem}>{track.title}</Text>
-            <Text>{formatDuration(track.duration)}</Text>
+          <View style={styles.trackContainer}>
+            <Image style={styles.image} src={track.artwork} />
+            <View style={styles.info}>
+              <Text style={styles.date}>{formatDate(track.date)}</Text>
+              <Text style={styles.title}>{track.title}</Text>
+              <Text style={styles.duration}>{formatDuration(track.duration)}</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -39,14 +48,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  progressBar: {
+    flexDirection: "row",
+    borderRadius: 8,
+    height: 90,
+  },
   trackContainer: {
     flexDirection: "row",
-  },
-  playlistItem: {
-    fontSize: 16,
+    position: "absolute",
+    alignItems: "center",
+    padding: 8,
+    margin: 4,
   },
   image: {
-    height: 48,
-    width: 48,
+    height: 56,
+    width: 56,
+    marginRight: 8,
   },
+  title: {
+    width: "85%",
+  }
 });
