@@ -41,6 +41,7 @@ export default function Playlist() {
             index={index}
             isCurrent={currentTrack === index}
 
+
           />
         )}
         keyExtractor={item => item.id}
