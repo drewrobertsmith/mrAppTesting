@@ -24,6 +24,7 @@ export default function EpisodeItem({ episode }) {
           url: episode.AudioUrl,
           artist: "Moody Radio",
           artwork: episode.ImageUrl,
+          description: episode.DescriptionHtml,
           duration: episode.DurationSeconds,
           date: episode.PublishedUtc,
         }

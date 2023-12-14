@@ -15,7 +15,7 @@ export default function AppNavigator() {
   const { signOutUser } = useContext(SupabaseAuthContext);
 
   return (
-    <SafeArea>
+  
       <Tab.Navigator
         tabBar={(props) => <MiniPlayerBar {...props} />}
         screenOptions={({ route }) => ({
@@ -56,6 +56,5 @@ export default function AppNavigator() {
           }}
         />
       </Tab.Navigator>
-    </SafeArea>
   );
 }

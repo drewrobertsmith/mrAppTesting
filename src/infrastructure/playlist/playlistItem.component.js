@@ -16,10 +16,8 @@ export default function PlaylistItem({ track, index, isCurrent }) {
 
   const { position, duration } = useProgress();
   const progressWidth = duration > 0 ? (position / duration) * 100 : 0;
-  
+
   const timeLeft = track.duration - position;
-
-
 
   return (
     <View style={styles.container}>
@@ -38,7 +36,9 @@ export default function PlaylistItem({ track, index, isCurrent }) {
             <View style={styles.info}>
               <Text style={styles.date}>{formatDate(track.date)}</Text>
               <Text style={styles.title}>{track.title}</Text>
-              <Text style={styles.duration}>{`${formatDuration(timeLeft)}${position < track.duration ? ' left' : ''}`}</Text>
+              <Text style={styles.duration}>{`${formatDuration(timeLeft)}${
+                position < track.duration ? " left" : ""
+              }`}</Text>
             </View>
           </View>
         </View>
@@ -69,13 +69,16 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   title: {
-    width: "85%",
-    fontWeight: "bold"
+    width: "85%", //this is preventing the text within the absolute positioned view from overrunning the wdith but it doesnt look great and wastes space
+    fontWeight: "bold",
+    color: "white",
   },
   date: {
     fontSize: 12,
+    color: "white",
   },
   duration: {
     fontSize: 12,
-  }
+    color: "white",
+  },
 });

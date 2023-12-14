@@ -50,5 +50,8 @@ export default function Playlist() {
   );
 }
 const styles = StyleSheet.create({
-  playlist: {},
+  playlist: {
+    flex: 1,
+    backgroundColor: '#003b5c',
+  },
 });
