@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
   useWindowDimensions,
 } from "react-native";
 import TrackPlayer, { State } from "react-native-track-player";

@@ -24,22 +24,29 @@ export default function PlaylistItem({ track, index, isCurrent }) {
       <TouchableOpacity onPress={handleItemPress} onLongPress={handleLongPress}>
         <View
           style={{
-            ...styles.progressBar,
-            ...{
-              backgroundColor: isCurrent ? "lightblue" : "transparent",
-              width: isCurrent ? `${progressWidth}%` : "0%",
-            },
+            ...styles.trackContainer,
+            backgroundColor: isCurrent ? "#00578A" : null,
           }}
         >
-          <View style={styles.trackContainer}>
-            <Image style={styles.image} src={track.artwork} />
-            <View style={styles.info}>
-              <Text style={styles.date}>{formatDate(track.date)}</Text>
-              <Text style={styles.title}>{track.title}</Text>
-              <Text style={styles.duration}>{`${formatDuration(timeLeft)}${
-                position < track.duration ? " left" : ""
-              }`}</Text>
-            </View>
+          {/* Absolute positioned progress bar */}
+          {isCurrent && (
+            <View
+              style={{
+                ...styles.progressBar,
+                width: `${progressWidth}%`,
+              }}
+            />
+          )}
+
+          <Image style={styles.image} src={track.artwork} />
+          <View style={styles.info}>
+            <Text style={styles.date}>{formatDate(track.date)}</Text>
+            <Text style={styles.title}>
+              {track.title}
+            </Text>
+            <Text style={styles.duration}>{`${formatDuration(timeLeft)}${
+              position < track.duration ? " left" : ""
+            }`}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -50,26 +57,32 @@ export default function PlaylistItem({ track, index, isCurrent }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  progressBar: {
-    flexDirection: "row",
-    borderRadius: 8,
-    height: 90,
+    padding: 4,
   },
   trackContainer: {
     flexDirection: "row",
-    position: "absolute",
-    alignItems: "center",
+    borderRadius: 12,
     padding: 8,
-    margin: 4,
+    overflow: "hidden"
+  },
+  progressBar: {
+    height: "150%", // Set the height to fill the container
+    backgroundColor: "#0071B3",
+    position: "absolute", // Position absolutely to overlay on top of the track container
+    top: 0, // Align to the top of the container
+    left: 0, // Align to the left of the container
+  },
+  info: {
+    flex: 1, // Add flex to allow it to fill the remaining space
+    justifyContent: "center", // Vertically center the contents
   },
   image: {
     height: 56,
     width: 56,
     marginRight: 8,
+    borderRadius: 8,
   },
   title: {
-    width: "85%", //this is preventing the text within the absolute positioned view from overrunning the wdith but it doesnt look great and wastes space
     fontWeight: "bold",
     color: "white",
   },

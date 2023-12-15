@@ -1,6 +1,5 @@
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
-import TrackPlayer, { useIsPlaying } from "react-native-track-player";
+import { StyleSheet, Text, View } from "react-native";
 import {
   formatDate,
   formatDuration,
@@ -10,7 +9,6 @@ import React from "react";
 import { updateQueue } from "../../../services/trackPlayer.service";
 
 export default function EpisodeItem({ episode }) {
-
   async function handlePlayButtonPress() {
     await updateQueue("play", episode);
   }
