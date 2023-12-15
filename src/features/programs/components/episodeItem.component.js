@@ -7,58 +7,16 @@ import {
 } from "../../../services/formatter.service";
 
 import React from "react";
+import { updateQueue } from "../../../services/trackPlayer.service";
 
 export default function EpisodeItem({ episode }) {
-  async function updateQueue(trackAction) {
-    const queue = await TrackPlayer.getQueue();
-    const trackIndex = queue.findIndex((track) => track.id === episode.Id);
-
-    //if track is not in queue
-    if (trackIndex === -1 && trackAction === "play") {
-      await TrackPlayer.add(
-        {
-          id: episode.Id,
-          title: episode.Title,
-          url: episode.AudioUrl,
-          artist: "Moody Radio",
-          artwork: episode.ImageUrl,
-          description: episode.DescriptionHtml,
-          duration: episode.DurationSeconds,
-          date: episode.PublishedUtc,
-        },
-        0 //adds track to position 0 in queue
-      );
-      await TrackPlayer.skip(0); //skips to position 0
-      await TrackPlayer.play();
-    } else if (trackIndex === -1 && trackAction === "queue") {
-      await TrackPlayer.add({
-        id: episode.Id,
-        title: episode.Title,
-        url: episode.AudioUrl,
-        artist: "Moody Radio",
-        artwork: episode.ImageUrl,
-        description: episode.DescriptionHtml,
-        duration: episode.DurationSeconds,
-        date: episode.PublishedUtc,
-      });
-    } else {
-      //if track is already in queue
-      if (trackIndex != -1 && trackAction === "play") {
-        await TrackPlayer.skip(trackIndex);
-        await TrackPlayer.move(trackIndex, 0);
-        await TrackPlayer.play();
-      } else {
-        Alert.alert("Already in Queue");
-      }
-    }
-  }
 
   async function handlePlayButtonPress() {
-    await updateQueue("play");
+    await updateQueue("play", episode);
   }
 
   async function handleQueueButtonPress() {
-    await updateQueue("queue");
+    await updateQueue("queue", episode);
   }
 
   return (
