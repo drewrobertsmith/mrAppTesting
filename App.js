@@ -1,8 +1,4 @@
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  StyleSheet,
-} from "react-native";
+import { ActivityIndicator, SafeAreaView, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { addTracks, setupPlayer } from "./src/services/trackPlayer.service";
 
@@ -13,17 +9,7 @@ import { SupabaseAuthContextProvidor } from "./src/services/authentication/supab
 import TrackPlayer from "react-native-track-player";
 
 export default function App() {
-  // const [session, setSession] = useState(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
-
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data: { session } }) => {
-  //     setSession(session);
-  //   });
-  //   supabase.auth.onAuthStateChange((_event, session) => {
-  //     setSession(session);
-  //   });
-  // }, []);
 
   //this intantiates the player using the setupPlayer() function from the trackservice
   useEffect(() => {

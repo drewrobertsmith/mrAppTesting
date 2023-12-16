@@ -2,6 +2,7 @@ import { Button } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MiniPlayerBar from "../player/miniPlayerBar.component";
 import PlayerNavigator from "./player.navigator";
+import ProfileScreen from "../../features/account/screens/profile.screen";
 import ProgramNavigator from "./program.navigator";
 import StationsScreen from "../../features/stations/screens/stations.screen";
 import { SupabaseAuthContext } from "../../services/authentication/supabaseAuth.context";
@@ -24,6 +25,8 @@ export default function AppNavigator() {
             iconName = focused ? "mic" : "mic";
           } else if (route.name === "Stations") {
             iconName = focused ? "radio" : "radio";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "supervisor-account" : "supervisor-account";
           }
           return <MaterialIcons name={iconName} size={size} color={color} />;
         },
@@ -31,9 +34,11 @@ export default function AppNavigator() {
         tabBarInactiveTintColor: "grey",
       })}
     >
+      <Tab.Screen name="Programs" component={ProgramNavigator} />
+      <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen
-        name="Programs"
-        component={ProgramNavigator}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           headerRight: () => (
             <Button
@@ -44,7 +49,7 @@ export default function AppNavigator() {
           ),
         }}
       />
-      <Tab.Screen name="Stations" component={StationsScreen} />
+
       <Tab.Screen
         name="Expanded Player"
         component={PlayerNavigator}
