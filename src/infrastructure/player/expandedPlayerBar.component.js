@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  View,
   useWindowDimensions,
 } from "react-native";
 import TrackPlayer, { State } from "react-native-track-player";
@@ -33,17 +34,23 @@ export default function ExpandedPlayerBar() {
     >
       <Image src={currentTrack.artwork} style={styles.image} />
       <Text style={styles.title}>{currentTrack.title}</Text>
-      <RenderHTML 
+      <RenderHTML
         contentWidth={window.width}
-        source={{html: currentTrack.description}}
+        source={{ html: currentTrack.description }}
         baseStyle={styles.description}
       />
     </ScrollView>
   ) : (
-    <ActivityIndicator size="large" />
+    <View style={styles.emptyContainer}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 }
 const styles = StyleSheet.create({
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: "003b5c",
+  },
   container: {
     flex: 1,
     padding: 16,
