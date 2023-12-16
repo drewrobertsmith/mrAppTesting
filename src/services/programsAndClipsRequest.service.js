@@ -34,7 +34,7 @@ async function fetchData(endpoint) {
 }
 
 /*================================Programs REQUEST=========================================*/
-export async function ProgramsRequest({ setIsLoading, setPrograms }) {
+export async function ProgramsRequest({ setIsLoading, setAToZPrograms }) {
   setIsLoading(true);
   try {
     // Check cache
@@ -44,12 +44,13 @@ export async function ProgramsRequest({ setIsLoading, setPrograms }) {
     } else {
       //If !cachedData request from the API
       const result = await fetchData(`/orgs/${ORG_ID}/programs`);
-      const filteredPrograms = result.Programs.filter(
+      const networkFilteredPrograms = result.Programs.filter(
         (n) => n.Network === "Moody Radio"
       );
-      setPrograms(filteredPrograms);
+      setAToZPrograms(networkFilteredPrograms);
+
       //Set cache with requested data
-      await setCachedData(PROGRAMS_CACHE_PREFIX, filteredPrograms);
+      await setCachedData(PROGRAMS_CACHE_PREFIX, networkFilteredPrograms);
     }
   } catch (error) {
     console.log("Error fetching Program data:", error);
@@ -114,9 +115,7 @@ export async function ClipsByPlaylistRequest({
 export async function ClipsByProgramID({ setIsLoading, setEpisodes, show }) {
   setIsLoading(true);
   try {
-    const result = await fetchData(
-      `/orgs/${ORG_ID}/programs/${show.Id}/clips`
-    );
+    const result = await fetchData(`/orgs/${ORG_ID}/programs/${show.Id}/clips`);
     setEpisodes(result.Clips);
   } catch (error) {
     console.log("error fetching data: ", error);

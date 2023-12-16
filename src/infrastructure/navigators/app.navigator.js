@@ -1,4 +1,5 @@
-import { Button } from "react-native";
+import { Button, Text } from "react-native";
+
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MiniPlayerBar from "../player/miniPlayerBar.component";
 import PlayerNavigator from "./player.navigator";
@@ -35,6 +36,7 @@ export default function AppNavigator() {
       })}
     >
       <Tab.Screen name="Programs" component={ProgramNavigator} />
+
       <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen
         name="Profile"
