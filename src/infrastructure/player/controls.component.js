@@ -32,10 +32,16 @@ export default function Controls() {
         size={32}
         onPress={() => TrackPlayer.seekBy(-15)}
         onLongPress={() => TrackPlayer.skipToPrevious()}
-        style={{ transform: [{ rotateY: "180deg" }] }}
+        style={{...styles.icon, transform: [{ rotateY: "180deg" }] }}
         color={"white"}
       />
-      <Icon name={playState} size={48} onPress={handlePlayPress} color={"white"}/>
+      <Icon
+        name={playState}
+        size={48}
+        onPress={handlePlayPress}
+        color={"white"}
+        style={styles.icon}
+      />
 
       <Icon
         name="reload1"
@@ -43,6 +49,7 @@ export default function Controls() {
         onPress={() => TrackPlayer.seekBy(15)}
         onLongPress={() => TrackPlayer.skipToNext()}
         color={"white"}
+        style={styles.icon}
       />
     </View>
   );
@@ -50,8 +57,12 @@ export default function Controls() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     paddingBottom: 4,
+  },
+  icon: {
+    paddingLeft: 16,
+    paddingRight: 16,
   },
 });
