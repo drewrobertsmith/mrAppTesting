@@ -15,7 +15,7 @@ export default function QueueHeader() {
       <Button
         title="Clear Queue"
         onPress={async () => await TrackPlayer.removeUpcomingTracks()}
-        color="white"
+        color="#74a433"
       />
     </View>
   );
