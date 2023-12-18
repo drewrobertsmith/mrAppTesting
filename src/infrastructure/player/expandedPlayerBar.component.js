@@ -38,6 +38,7 @@ export default function ExpandedPlayerBar() {
         contentWidth={window.width}
         source={{ html: currentTrack.description }}
         baseStyle={styles.description}
+        tagsStyles={tagsStyles}
       />
     </ScrollView>
   ) : (
@@ -46,6 +47,13 @@ export default function ExpandedPlayerBar() {
     </View>
   );
 }
+
+const tagsStyles = {
+  a: {
+    color: "#74a433",
+  },
+};
+
 const styles = StyleSheet.create({
   emptyContainer: {
     flex: 1,
