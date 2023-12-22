@@ -9,15 +9,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import FilterOptions from "../components/filterOptions.component";
 import ProgramItem from "../components/programItem.component";
 import { ProgramsRequest } from "../../../services/programsAndClipsRequest.service";
 
 export default function ProgramsScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [aToZPrograms, setAToZPrograms] = useState([]);
-  const [releaseDatePrograms, setReleaseDatePrograms] = useState([]);
-  const [dragNDropPrograms, setDragNDropPrograms] = useState([]);
 
 
   useEffect(() => {

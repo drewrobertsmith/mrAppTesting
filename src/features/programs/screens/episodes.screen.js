@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -21,7 +22,7 @@ function ProgramHeader({ show }) {
   );
 }
 
-export default function EpisodesScreen({ route }) {
+export default function EpisodesScreen({ route, navigation }) {
   const { show } = route.params;
   const [episodes, setEpisodes] = useState([]);
   const [arePlaylistsLoading, setArePlaylistsLoading] = useState(false);
@@ -35,9 +36,13 @@ export default function EpisodesScreen({ route }) {
           data={episodes}
           keyExtractor={(item) => item.Id}
           renderItem={({ item }) => (
-            <EpisodeItem
-              episode={item}
-            />
+            <Pressable 
+              onPress={()=> navigation.navigate("Episode Screen", {
+                episode: item,
+              })}
+            >
+              <EpisodeItem episode={item} />
+            </Pressable>
           )}
           ListHeaderComponent={
             <View>
