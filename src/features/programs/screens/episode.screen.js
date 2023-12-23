@@ -1,4 +1,15 @@
-import { Image, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
+import {
+  formatDate,
+  formatDuration,
+} from "../../../services/formatter.service";
 
 import RenderHTML from "react-native-render-html";
 
@@ -6,39 +17,52 @@ export default function EpisodeScreen({ route }) {
   const { episode } = route.params;
   const window = useWindowDimensions();
 
-
   return (
-    <View styles={styles.container}>
-      <Image style={styles.img} src={episode.ImageUrl} />
-      <Text style={styles.title}>{episode.Title}</Text>
-      <RenderHTML 
+    <ScrollView styles={styles.container}>
+      <View style={styles.headingContainer}>
+        <Image style={styles.img} src={episode.ImageUrl} />
+        <View style={styles.headerInfo}>
+          <Text style={styles.title}>{episode.Title}</Text>
+          <Text>{formatDate(episode.PublishedUtc)}</Text>
+          <Text>{formatDuration(episode.DurationSeconds)}</Text>
+        </View>
+        <View></View>
+      </View>
+      <RenderHTML
         contentWidth={window.width}
-        source={{ html: episode.Description }}
+        source={{ html: episode.DescriptionHtml }}
         baseStyle={styles.description}
         tagsStyles={tagsStyles}
       />
-    </View>
+    </ScrollView>
   );
 }
 
 const tagsStyles = {
-    a: {
-      color: "#74a433",
-    },
-  };
+  a: {
+    color: "#74a433",
+  },
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerInfo: {
+    paddingLeft: 8,
   },
   img: {
     height: 100,
     width: 100,
   },
   title: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   description: {
-
+    padding: 8,
   },
 });

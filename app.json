@@ -3,15 +3,22 @@
     "name": "mrAppTesting",
     "slug": "mrAppTesting",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
       },
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
-      }
-      
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      },
+      "bundleIdentifier": "io.expo.mrAppTesting"
+    },
+    "android": {
+      "package": "com.mediated_reality.mrAppTesting"
     }
   }
 }

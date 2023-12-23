@@ -1,4 +1,4 @@
-package com.mrapptesting;
+package com.mediated_reality.mrAppTesting;
 
 import android.os.Build;
 import android.os.Bundle;

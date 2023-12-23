@@ -16,7 +16,6 @@ export default function ProgramsScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [aToZPrograms, setAToZPrograms] = useState([]);
 
-
   useEffect(() => {
     ProgramsRequest({ setIsLoading, setAToZPrograms });
   }, []);

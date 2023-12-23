@@ -8,19 +8,11 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import EpisodeItem from "../components/episodeItem.component";
+import ProgramHeader from "../components/programHeader.component";
 import ProgramsPlaylists from "../components/programPlaylists.component";
-
-function ProgramHeader({ show }) {
-  return (
-    <View style={styles.showInfoContainer}>
-      <Image style={styles.showImage} source={{ uri: show.ArtworkUrl }} />
-      <Text>{show.Description}</Text>
-    </View>
-  );
-}
 
 export default function EpisodesScreen({ route, navigation }) {
   const { show } = route.params;
@@ -36,10 +28,12 @@ export default function EpisodesScreen({ route, navigation }) {
           data={episodes}
           keyExtractor={(item) => item.Id}
           renderItem={({ item }) => (
-            <Pressable 
-              onPress={()=> navigation.navigate("Episode Screen", {
-                episode: item,
-              })}
+            <Pressable
+              onPress={() =>
+                navigation.navigate("Episode Screen", {
+                  episode: item,
+                })
+              }
             >
               <EpisodeItem episode={item} />
             </Pressable>
@@ -63,12 +57,5 @@ export default function EpisodesScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  showInfoContainer: {
-    padding: 8,
-  },
-  showImage: {
-    width: 200,
-    height: 200,
-  },
+  }
 });

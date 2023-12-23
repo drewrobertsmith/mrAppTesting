@@ -1,13 +1,16 @@
-import { Button, Text } from "react-native";
+import { Button, SafeAreaView, Text } from "react-native";
 
+import Header from "../components/header.component";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MiniPlayerBar from "../player/miniPlayerBar.component";
 import PlayerNavigator from "./player.navigator";
 import ProfileScreen from "../../features/account/screens/profile.screen";
 import ProgramNavigator from "./program.navigator";
+import { SafeArea } from "../../components/utility/safeArea.component";
 import StationsScreen from "../../features/stations/screens/stations.screen";
 import { SupabaseAuthContext } from "../../services/authentication/supabaseAuth.context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { getHeaderTitle } from "@react-navigation/elements";
 import { useContext } from "react";
 
 const Tab = createBottomTabNavigator();
@@ -35,7 +38,11 @@ export default function AppNavigator() {
         tabBarInactiveTintColor: "grey",
       })}
     >
-      <Tab.Screen name="Programs" component={ProgramNavigator} />
+      <Tab.Screen name="Programs" component={ProgramNavigator} 
+        options={{
+          headerShown: false
+        }}
+      />
 
       <Tab.Screen name="Stations" component={StationsScreen} />
       <Tab.Screen

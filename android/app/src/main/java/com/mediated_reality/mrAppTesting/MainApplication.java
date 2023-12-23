@@ -1,4 +1,4 @@
-package com.mrapptesting;
+package com.mediated_reality.mrAppTesting;
 
 import android.app.Application;
 import android.content.res.Configuration;
