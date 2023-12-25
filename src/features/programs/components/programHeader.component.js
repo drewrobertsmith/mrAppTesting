@@ -17,11 +17,14 @@ export default function ProgramHeader({ show }) {
   const dynamicBackground = colors
     ? { backgroundColor: colors.background }
     : {};
+  const dynamicFont = colors ? { color: colors.primary } : {};
 
   return (
     <View style={[styles.showInfoContainer, dynamicBackground]}>
       <Image style={styles.showImage} source={{ uri: show.ArtworkUrl }} />
-      <Text style={styles.showDescription}>{show.Description}</Text>
+      <Text style={[styles.showDescription, dynamicFont]}>
+        {show.Description}
+      </Text>
     </View>
   );
 }
