@@ -17,12 +17,17 @@ export default function ProgramHeader({ show }) {
   const dynamicBackground = colors
     ? { backgroundColor: colors.background }
     : {};
+//   const dynamicTextBackground = colors
+//     ? { backgroundColor: colors.dominant }
+//     : {};
   const dynamicFont = colors ? { color: colors.primary } : {};
 
   return (
     <View style={[styles.showInfoContainer, dynamicBackground]}>
       <Image style={styles.showImage} source={{ uri: show.ArtworkUrl }} />
-      <Text style={[styles.showDescription, dynamicFont]}>
+      <Text
+        style={[styles.showDescription, dynamicFont]}
+      >
         {show.Description}
       </Text>
     </View>
@@ -32,7 +37,7 @@ export default function ProgramHeader({ show }) {
 const styles = StyleSheet.create({
   showInfoContainer: {
     alignItems: "center",
-    padding: 8,
+    padding: 16,
   },
   showImage: {
     width: 200,

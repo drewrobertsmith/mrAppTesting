@@ -2,6 +2,7 @@
 export function formatDuration(durationSeconds) {
   const hours = Math.floor(durationSeconds / 3600);
   const minutes = Math.floor((durationSeconds % 3600) / 60);
+  const seconds = Math.floor((durationSeconds))
 
   let formattedDuration = "";
   if (hours > 0) {
@@ -9,6 +10,9 @@ export function formatDuration(durationSeconds) {
   }
   if (minutes > 0) {
     formattedDuration += `${minutes}m`;
+  }
+  if (minutes <= 0) {
+    formattedDuration += `${seconds}s`;
   }
   return formattedDuration;
 }
