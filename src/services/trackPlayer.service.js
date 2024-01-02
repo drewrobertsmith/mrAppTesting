@@ -47,11 +47,22 @@ export async function addTracks() {
   await TrackPlayer.setRepeatMode(RepeatMode.Off);
 }
 
+//inital function to load a stream, replacing any playing tracks. This is rough but works
+export async function playStream(name, callSign, url) {
+  await TrackPlayer.load({
+    id: callSign,
+    title: name,
+    artist: "Moody Radio",
+    url: url,
+    isLiveStream: true,
+  });
+  await TrackPlayer.play();
+}
+
 //Adding audio to plaback/queue
 export async function updateQueue(trackAction, episode) {
   const queue = await TrackPlayer.getQueue();
   const trackIndex = queue.findIndex((track) => track.id === episode.Id);
-  
 
   //if track is not in queue
   if (trackIndex === -1 && trackAction === "play") {

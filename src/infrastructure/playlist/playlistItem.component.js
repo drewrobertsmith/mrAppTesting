@@ -44,7 +44,8 @@ export default function PlaylistItem({ track, index, isCurrent }) {
             <Text style={styles.title}>
               {track.title}
             </Text>
-            <Text style={styles.duration}>{`${formatDuration(timeLeft)}${
+            <Text style={styles.duration}>
+              {`${formatDuration(timeLeft)}${
               position < track.duration ? " left" : ""
             }`}</Text>
           </View>
