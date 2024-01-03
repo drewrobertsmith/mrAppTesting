@@ -4,9 +4,11 @@ import TrackPlayer, {
   Event,
   RepeatMode,
   useActiveTrack,
+  useProgress,
 } from "react-native-track-player";
 
 import { Alert } from "react-native";
+import { supabase } from "./authentication/supabase.config";
 
 //player setup and functions for app start
 export async function setupPlayer() {
@@ -81,6 +83,17 @@ export async function updateQueue(trackAction, episode) {
     );
     await TrackPlayer.skip(0); //skips to position 0
     await TrackPlayer.play();
+    // await supabase
+    //   .from("track_progress")
+    //   .insert({
+    //     user_id: "fc5bbdf0-d415-4671-b1d2-e14b13df5748",
+    //     created_at: new Date(),
+    //     track_id: episode.Id,
+    //     progress: position,
+    //     last_updated: new Date(),
+    //   })
+    //   .select();
+
     //if not in queue and que button pressed
   } else if (trackIndex === -1 && trackAction === "queue") {
     await TrackPlayer.add({
