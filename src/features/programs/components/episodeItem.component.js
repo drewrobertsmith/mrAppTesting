@@ -41,6 +41,9 @@ export default function EpisodeItem({ episode }) {
     }
   }
 
+  let queueButtonIcon;
+
+
   async function handleQueueButtonPress() {
     await updateQueue("queue", episode, () => {});
   }
