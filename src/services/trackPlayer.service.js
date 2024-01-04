@@ -118,6 +118,31 @@ export async function updateQueue(trackAction, episode) {
   }
 }
 
+//Supabase Progress Tracking function
+export async function checkForProgress(episode, setIsStarted, setSavedPosition) {
+  try {
+    const { data, error } = await supabase
+      .from("track_progress")
+      .select()
+      .eq("episode_id", episode.Id);
+
+    if (error) {
+      console.error("Error fetching progress:", error);
+      return;
+    }
+    //added a data length check due to errors for any episode that doesnt have a matching id
+    if (data && data.length > 0 && data[0].episode_id === episode.Id) {
+      setIsStarted(true);
+      setSavedPosition(data[0].position);
+    } else {
+      console.log("No matching progress data found for episode:", episode.Id);
+    }
+  } catch (e) {
+    console.errpr("Error in checkForPRogress:", e);
+  }
+}
+
+
 //these are remote events to listen to from places where the ui IS NOT MOUNTED: android auto, lockscreen, notifications, bluetooth headset etc
 export async function playbackService() {
   TrackPlayer.addEventListener(Event.RemotePause, () => {

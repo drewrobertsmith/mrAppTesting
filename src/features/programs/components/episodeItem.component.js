@@ -5,13 +5,13 @@ import TrackPlayer, {
   useActiveTrack,
   useIsPlaying,
 } from "react-native-track-player";
+import { checkForProgress, updateQueue } from "../../../services/trackPlayer.service";
 import {
   formatDate,
   formatDuration,
 } from "../../../services/formatter.service";
 
 import { supabase } from "../../../services/authentication/supabase.config";
-import { updateQueue } from "../../../services/trackPlayer.service";
 
 export default function EpisodeItem({ episode }) {
   const activeTrack = useActiveTrack();
@@ -50,30 +50,9 @@ export default function EpisodeItem({ episode }) {
     await updateQueue("queue", episode, () => {});
   }
 
-  async function checkForProgress() {
-    try {
-      const { data, error } = await supabase
-        .from("track_progress")
-        .select()
-        .eq("episode_id", episode.Id);
-
-      if (error) {
-        console.error("Error fetching progress:", error);
-        return;
-      }
-      if (data && data.length > 0 && data[0].episode_id === episode.Id) {
-        setIsStarted(true);
-        setSavedPosition(data[0].position);
-      } else {
-        console.log("No matching progress data found for episode:", episode.Id);
-      }
-    } catch (e) {
-      console.errpr("Error in checkForPRogress:", e);
-    }
-  }
-
+  //checks for saved episode position
   useEffect(() => {
-    checkForProgress();
+    checkForProgress(episode, setIsStarted, setSavedPosition);
   }, []);
 
   return (
