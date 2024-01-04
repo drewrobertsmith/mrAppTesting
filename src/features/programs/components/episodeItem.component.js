@@ -51,25 +51,30 @@ export default function EpisodeItem({ episode }) {
   }
 
   async function checkForProgress() {
-    const { data, error } = await supabase
-      .from("track_progress")
-      .select()
-      .eq("track_id", "b61d8d9d-cab7-4dd1-a4ed-af2c015cb705");
-    console.log("track_id is: ", data[0].track_id);
-    console.log("episode.id: ", episode.Id, episode.Title);
-    if(data[0].track_id === episode.Id){
-      setIsStarted(true)
-      setSavedPosition(data[0].progress);
+    try {
+      const { data, error } = await supabase
+        .from("track_progress")
+        .select()
+        .eq("episode_id", episode.Id);
+
+      if (error) {
+        console.error("Error fetching progress:", error);
+        return;
+      }
+      if (data && data.length > 0 && data[0].episode_id === episode.Id) {
+        setIsStarted(true);
+        setSavedPosition(data[0].position);
+      } else {
+        console.log("No matching progress data found for episode:", episode.Id);
+      }
+    } catch (e) {
+      console.errpr("Error in checkForPRogress:", e);
     }
-    else null;
-    
   }
 
   useEffect(() => {
     checkForProgress();
   }, []);
-  console.log(savedPosition)
-  console.log(isStarted)
 
   return (
     <View style={styles.episodesContainer}>
@@ -81,7 +86,7 @@ export default function EpisodeItem({ episode }) {
             isStarted
               ? formatDuration(episode.DurationSeconds - savedPosition)
               : formatDuration(episode.DurationSeconds)
-          }${isStarted ? " left" : ""}`}
+          }${isStarted && savedPosition > 0 ? " left" : ""}`}
         </Text>
       </View>
       <AntDesign
