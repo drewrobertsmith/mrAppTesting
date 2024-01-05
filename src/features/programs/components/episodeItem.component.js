@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import TrackPlayer, {
   useActiveTrack,
   useIsPlaying,
+  useProgress,
 } from "react-native-track-player";
 import { checkForProgress, updateQueue } from "../../../services/trackPlayer.service";
 import {
@@ -11,13 +12,13 @@ import {
   formatDuration,
 } from "../../../services/formatter.service";
 
-import { supabase } from "../../../services/authentication/supabase.config";
-
 export default function EpisodeItem({ episode }) {
   const activeTrack = useActiveTrack();
   const isPlaying = useIsPlaying();
   const [savedPosition, setSavedPosition] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
+  const { position, duration } = useProgress();
+
 
   // Determine the current play state for this episode
   let playButtonIcon;
@@ -40,7 +41,7 @@ export default function EpisodeItem({ episode }) {
     ) {
       await TrackPlayer.pause();
     } else {
-      await updateQueue("play", episode, () => {});
+      await updateQueue("play", episode, savedPosition, () => {});
     }
   }
 
@@ -63,7 +64,7 @@ export default function EpisodeItem({ episode }) {
         <Text>
           {`${
             isStarted
-              ? formatDuration(episode.DurationSeconds - savedPosition)
+              ? formatDuration(episode.DurationSeconds - savedPosition )
               : formatDuration(episode.DurationSeconds)
           }${isStarted && savedPosition > 0 ? " left" : ""}`}
         </Text>

@@ -62,7 +62,7 @@ export async function playStream(name, callSign, url) {
 }
 
 //Adding audio to plaback/queue
-export async function updateQueue(trackAction, episode) {
+export async function updateQueue(trackAction, episode, savedPosition) {
   const queue = await TrackPlayer.getQueue();
   const trackIndex = queue.findIndex((track) => track.id === episode.Id);
 
@@ -82,17 +82,15 @@ export async function updateQueue(trackAction, episode) {
       0 //adds track to position 0 in queue
     );
     await TrackPlayer.skip(0); //skips to position 0
+    await TrackPlayer.seekTo(savedPosition); // seeks to the saved position of an episode
     await TrackPlayer.play();
     // await supabase
     //   .from("track_progress")
-    //   .insert({
-    //     user_id: "fc5bbdf0-d415-4671-b1d2-e14b13df5748",
-    //     created_at: new Date(),
-    //     track_id: episode.Id,
-    //     progress: position,
+    //   .update({
+    //     position: 120,
     //     last_updated: new Date(),
     //   })
-    //   .select();
+    //   .eq("episode_id", episode.Id);
 
     //if not in queue and que button pressed
   } else if (trackIndex === -1 && trackAction === "queue") {
@@ -111,6 +109,7 @@ export async function updateQueue(trackAction, episode) {
     if (trackIndex != -1 && trackAction === "play") {
       await TrackPlayer.skip(trackIndex);
       await TrackPlayer.move(trackIndex, 0);
+      await TrackPlayer.seekTo(savedPosition); // seeks to the saved position of an episode
       await TrackPlayer.play();
     } else {
       Alert.alert("Already in Queue");
@@ -119,7 +118,11 @@ export async function updateQueue(trackAction, episode) {
 }
 
 //Supabase Progress Tracking function
-export async function checkForProgress(episode, setIsStarted, setSavedPosition) {
+export async function checkForProgress(
+  episode,
+  setIsStarted,
+  setSavedPosition
+) {
   try {
     const { data, error } = await supabase
       .from("track_progress")
@@ -141,7 +144,6 @@ export async function checkForProgress(episode, setIsStarted, setSavedPosition) 
     console.errpr("Error in checkForPRogress:", e);
   }
 }
-
 
 //these are remote events to listen to from places where the ui IS NOT MOUNTED: android auto, lockscreen, notifications, bluetooth headset etc
 export async function playbackService() {
